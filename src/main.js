@@ -4,6 +4,10 @@ import router from './router'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import './style/index.less'
+import axios from 'axios'
+axios.defaults.baseURL = 'http://ttapi.research.itcast.cn/mp/v1_0'// 给Vue对象的原型属性赋值 那么所有vue实例自动拥有$axios
+
+Vue.prototype.$axios = axios
 
 Vue.config.productionTip = false
 Vue.use(ElementUI) // 全局注册elementUI组件 任意位置都可以使用
