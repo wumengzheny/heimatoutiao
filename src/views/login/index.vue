@@ -6,7 +6,7 @@
       </div>
       <!-- 表单组件 el-form表单容器 -->
       <!-- 数据校验 首先要给el-form一个model属性 表示数据对象 -->
-      <el-form  style="margin-top:20px" :model='loginForm' :rules="loginRules">
+      <el-form ref="loginForm" style="margin-top:20px" :model='loginForm' :rules="loginRules">
         <!-- 表单项 -->
         <el-form-item prop="mobile">
           <!-- 放置组件内容 -->
@@ -25,7 +25,7 @@
           <el-checkbox v-model="loginForm.check">我已阅读并同意用户协议和隐私条款</el-checkbox>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary"  style="width:100%">
+          <el-button @click='login' type="primary"  style="width:100%">
             登录
           </el-button>
         </el-form-item>
@@ -74,7 +74,15 @@ export default {
     }
   },
   methods: {
-
+    login () {
+      this.$refs.loginForm.validate(isOk => {
+        // if (isOk) {
+        //   this.$message({ type: 'success', message: '成功' })
+        // } else {
+        //   this.$message({ type: 'warning', message: '失败' })
+        // }
+      })
+    }
   }
 }
 </script>
