@@ -5,22 +5,24 @@
         <img src="../../assets/img/logo_index.png" alt="">
       </div>
       <!-- 表单组件 el-form表单容器 -->
-      <el-form style="margin-top:20px">
+      <!-- 数据校验 首先要给el-form一个model属性 表示数据对象 -->
+      <el-form  style="margin-top:20px" :model='loginForm' :rules="loginRules">
         <!-- 表单项 -->
-        <el-form-item>
+        <el-form-item prop="mobile">
           <!-- 放置组件内容 -->
-          <el-input>
+          <el-input placeholder="请输入手机号" v-model="loginForm.mobile">
 
           </el-input>
         </el-form-item>
-        <el-form-item>
-          <el-input style="width:250px">
+        <el-form-item prop="code">
+          <el-input style="width:250px" v-model="loginForm.code" placeholder="请输入验证码">
 
           </el-input>
            <el-button style="float:right">发送验证码</el-button>
         </el-form-item>
-        <el-form-item>
-          <el-checkbox>我已阅读并同意用户协议和隐私条款</el-checkbox>
+        <el-form-item prop="check">
+          <!-- 绑定是否勾选 -->
+          <el-checkbox v-model="loginForm.check">我已阅读并同意用户协议和隐私条款</el-checkbox>
         </el-form-item>
         <el-form-item>
           <el-button type="primary"  style="width:100%">
@@ -34,7 +36,46 @@
 
 <script>
 export default {
+  data () {
+    let validator = function (rule, value, callBack) {
+      if (value) {
+        callBack()
+      } else {
+        callBack(new Error('您必须同意才能进入'))
+      }
+    }
+    return {
+      loginForm: {
+        mobile: '',
+        code: '',
+        check: false// 是否勾选协议
+      },
+      // 定义rules 校验规则
+      loginRules: {
+        mobile: [{
+          required: true,
+          message: '手机号不能为空'
+        }, {
+          pattern: /^1[3456789]\d{9}$/, // 正则表达式
+          message: '手机号格式不正确'
+        }],
+        code: [{
+          required: true,
+          message: '验证码不能为空'
+        },
+        {
+          pattern: /^\d{6}$/,
+          message: '验证码必须为6位'
+        }],
+        check: [{
+          validator
+        }]
+      }
+    }
+  },
+  methods: {
 
+  }
 }
 </script>
 
