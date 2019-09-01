@@ -8,11 +8,11 @@
          </span>
      </el-col>
      <el-col :span="3" class="right">
-         <img class="header-img" src="../../assets/img/avatar.jpg" alt="">
+         <img class="header-img" :src="!userInfo.photo?userInfo.photo: defaultImg" alt="">
          <!-- el-dropdown 下拉菜单 =>  显示名称 匿名插槽, 下拉内容是具名插槽 -->
      <el-dropdown trigger="click">
  <span class="el-dropdown-link">
-        前端82期<i class="el-icon-arrow-down el-icon--right"></i>
+        {{userInfo.name}}<i class="el-icon-arrow-down el-icon--right"></i>
       </span>
       <el-dropdown-menu slot="dropdown">
         <el-dropdown-item>个人信息</el-dropdown-item>
@@ -28,8 +28,30 @@
 </template>
 
 <script>
-export default {
 
+export default {
+  data () {
+    return {
+      userInfo: {},
+      defaultImg: require('../../assets/img/avatar.jpg')
+    }
+  },
+  methods: {
+    getUserInfo () {
+      let token = window.localStorage.getItem('user-token')// 获取token
+      this.$axios({
+        url: '/user/profile',
+        headers: { 'Authorization': `Bearer ${token}` }
+
+      }).then(result => {
+        console.log(result)
+        this.userInfo = result.data.data
+      })
+    }
+  },
+  created () {
+    this.getUserInfo()
+  }
 }
 </script>
 
