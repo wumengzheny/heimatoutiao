@@ -10,14 +10,14 @@
      <el-col :span="3" class="right">
          <img class="header-img" :src="!userInfo.photo?userInfo.photo: defaultImg" alt="">
          <!-- el-dropdown 下拉菜单 =>  显示名称 匿名插槽, 下拉内容是具名插槽 -->
-     <el-dropdown trigger="click">
+     <el-dropdown trigger="click" @command='handleMenuItem'>
  <span class="el-dropdown-link">
         {{userInfo.name}}<i class="el-icon-arrow-down el-icon--right"></i>
       </span>
       <el-dropdown-menu slot="dropdown">
-        <el-dropdown-item>个人信息</el-dropdown-item>
-        <el-dropdown-item>git地址</el-dropdown-item>
-        <el-dropdown-item>退出</el-dropdown-item>
+        <el-dropdown-item command='account'>个人信息</el-dropdown-item>
+        <el-dropdown-item command='git'>git地址</el-dropdown-item>
+        <el-dropdown-item command='lgout'>退出</el-dropdown-item>
 
       </el-dropdown-menu>
      </el-dropdown>
@@ -47,7 +47,21 @@ export default {
         console.log(result)
         this.userInfo = result.data.data
       })
+    },
+    handleMenuItem (command) {
+    //   alert(command)
+      if (command === 'account') {
+        // 账户信息
+      } else if (command === 'git') {
+        // git地址
+        window.location.href = 'https://github.com/shuiruohanyu/82heimatoutiao'
+      } else {
+        // 退出
+        window.localStorage.clear()// 清空缓存 清除所有的缓存 只能清除当前项目的缓存
+        this.$router.push('/login')// 跳转到登录页
+      }
     }
+
   },
   created () {
     this.getUserInfo()
