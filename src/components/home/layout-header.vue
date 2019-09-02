@@ -38,10 +38,10 @@ export default {
   },
   methods: {
     getUserInfo () {
-      let token = window.localStorage.getItem('user-token')// 获取token
+      // let token = window.localStorage.getItem('user-token')// 获取token
       this.$axios({
-        url: '/user/profile',
-        headers: { 'Authorization': `Bearer ${token}` }
+        url: '/user/profile'
+        // headers: { 'Authorization': `Bearer ${token}` }
 
       }).then(result => {
         console.log(result)
