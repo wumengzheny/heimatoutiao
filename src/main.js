@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import App from './App.vue'
-import router from './router'
+import router from './permission'
 import ElementUI from 'element-ui'
 // 自定义组件
 import Component from './components'// 可以不用写后面的index.js
