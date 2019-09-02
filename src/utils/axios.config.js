@@ -14,6 +14,16 @@ axios.interceptors.request.use(function (config) {
   return Promise.reject(error)
 })
 
+// 响应拦截器
+axios.interceptors.response.use(function (response) {
+  // 对响应数据做处理
+  return response.data ? response.data : {}
+  //   debugger
+//   return response
+}, function (error) {
+  // 对响应错误做处理
+  return Promise.reject(error)
+})
 // export default {
 //   install: function (Vue) {
 //     Vue.prototype.$axios = axios // 给Vue对象的原型属性赋值 那么所有vue实例自动拥有$axios

@@ -7,7 +7,7 @@ import Component from './components'// 可以不用写后面的index.js
 import 'element-ui/lib/theme-chalk/index.css'
 import './style/index.less'
 import axios from './utils/axios.config'
-axios.defaults.baseURL = 'http://ttapi.research.itcast.cn/mp/v1_0'// 给Vue对象的原型属性赋值 那么所有vue实例自动拥有$axios
+// axios.defaults.baseURL = 'http://ttapi.research.itcast.cn/mp/v1_0'// 给Vue对象的原型属性赋 那么所有vue实例自动拥有$axios
 
 Vue.prototype.$axios = axios
 
