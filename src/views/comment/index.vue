@@ -19,7 +19,7 @@
           row, column, $index 和 store（table 内部的状态管理）的数据，
           用法参考 demo。 -->
           <el-button type='text' size="small">修改评论</el-button>
-          <el-button type='text' size="small" :style="{color:obj.row.comment_status?'#E6A23C':'#409EFF'}" >{{obj.row.comment_status?'关闭评论':'打开评论'}}</el-button>
+          <el-button @click="openOrClose(obj.row)" type='text' size="small" :style="{color:obj.row.comment_status?'#E6A23C':'#409EFF'}" >{{obj.row.comment_status?'关闭评论':'打开评论'}}</el-button>
         </template>
 
       </el-table-column>
@@ -39,6 +39,12 @@ export default {
     }
   },
   methods: {
+    openOrClose (row) {
+      let mess = row.comment_status ? '关闭' : '打开'
+      this.$confirm(`您是否要${mess}评论？`, '提示').then(() => {
+        // 调用接口
+      })
+    },
     formatter (row, column, cellValue, index) {
       return row.comment_status ? '正常' : '关闭'
     },
@@ -48,7 +54,7 @@ export default {
         params: { response_type: 'comment' }
       }).then(result => {
         this.list = result.data.results
-        // console.log(result.data)
+      // console.log(result.data)
       })
     }
   },
