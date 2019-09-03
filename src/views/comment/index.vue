@@ -16,7 +16,7 @@
       <el-table-column label="操作" width='150'>
         <template slot-scope="obj">
           <!-- 通过 Scoped slot 可以获取到
-          row, column, $index 和 store（table 内部的状态管理）的数据，
+          , column, $index 和 store（table 内部的状态管理）的数据，
           用法参考 demo。 -->
           <el-button type='text' size="small">修改评论</el-button>
           <el-button @click="openOrClose(obj.row)" type='text' size="small" :style="{color:obj.row.comment_status?'#E6A23C':'#409EFF'}" >{{obj.row.comment_status?'关闭评论':'打开评论'}}</el-button>
@@ -43,6 +43,14 @@ export default {
       let mess = row.comment_status ? '关闭' : '打开'
       this.$confirm(`您是否要${mess}评论？`, '提示').then(() => {
         // 调用接口
+        this.$axios({
+          method: 'put',
+          url: '/comments/status',
+          params: { article_id: row.id.toString() },
+          data: { allow_comment: !row.comment_status }
+        }).then(result => {
+          this.getComments()// 成功之后 重新调用 拉取数据的方法=>前后台同步
+        })
       })
     },
     formatter (row, column, cellValue, index) {

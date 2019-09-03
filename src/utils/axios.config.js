@@ -3,8 +3,12 @@
 import axios from 'axios'
 import router from '../router'
 import { Message } from 'element-ui'
+import jsonBigInt from 'json-bigint'
 axios.defaults.baseURL = 'http://ttapi.research.itcast.cn/mp/v1_0'// 给Vue对象的原型属性赋值 那么所有vue实例自动拥有$axios
-
+axios.defaults.transformResponse = [function (data) {
+  // data是响应回来的字符串
+  return jsonBigInt.parse(data)
+}]
 // 请求拦截器
 axios.interceptors.request.use(function (config) {
   let token = window.localStorage.getItem('user-token')
