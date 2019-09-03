@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-card>
+    <el-card v-loading="loading">
       <!-- 插槽内容=>标题 -->
       <bread-crumb slot="header">
         <template slot='title'>
@@ -46,6 +46,7 @@
 export default {
   data () {
     return {
+      loading: false, // 控制精度条的状态
       list: [],
       page: {
         page: 1, // 当前页码
@@ -79,10 +80,12 @@ export default {
       return row.comment_status ? '正常' : '关闭'
     },
     getComments () {
+      this.loading = true// 请求数据之前 把进度条打开
       this.$axios({
         url: '/articles',
         params: { response_type: 'comment', page: this.page.page, per_page: this.page.pageSize }
       }).then(result => {
+        this.loading = false // 响应数据之后
         this.list = result.data.results
         this.page.total = result.data.total_count
       // console.log(result.data)
