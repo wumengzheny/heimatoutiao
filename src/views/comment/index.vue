@@ -25,6 +25,17 @@
       </el-table-column>
 
       </el-table>
+      <el-row type="flex" justify="center" style="margin:10px 0">
+         <!-- 分页组件  current-page当前页码 每页显示多少条 page-size total 总数 -->
+           <el-pagination
+           @current-change="changePage"
+           :current-page="page.page"
+           :page-size="page.pageSize"
+            background
+            layout="prev, pager, next"
+            :total="page.total">
+</el-pagination>
+      </el-row>
 
     </el-card>
 
@@ -35,10 +46,21 @@
 export default {
   data () {
     return {
-      list: []
+      list: [],
+      page: {
+        page: 1, // 当前页码
+        pageSize: 10, // 当前每页条数
+        total: 0// 总条数
+      }
+
     }
   },
   methods: {
+    changePage (newPage) {
+      // alert(newPage)
+      this.page.page = newPage
+      this.getComments()
+    },
     openOrClose (row) {
       let mess = row.comment_status ? '关闭' : '打开'
       this.$confirm(`您是否要${mess}评论？`, '提示').then(() => {
@@ -59,9 +81,10 @@ export default {
     getComments () {
       this.$axios({
         url: '/articles',
-        params: { response_type: 'comment' }
+        params: { response_type: 'comment', page: this.page.page, per_page: this.page.pageSize }
       }).then(result => {
         this.list = result.data.results
+        this.page.total = result.data.total_count
       // console.log(result.data)
       })
     }
