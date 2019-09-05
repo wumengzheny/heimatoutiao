@@ -23,7 +23,7 @@
                <span>内容管理</span>
            </template>
            <!-- el-submenu 是折叠的 => el-menu-item  => 下拉内容时匿名插槽 ,显示内容时具名插槽 -->
-        <el-menu-item index="/home/public">发布文章</el-menu-item>
+        <el-menu-item index="/home/publish">发布文章</el-menu-item>
         <el-menu-item index="/home/articles">内容列表</el-menu-item>
         <el-menu-item index="/home/comment">评论管理</el-menu-item>
         <el-menu-item index="/home/material">素材管理</el-menu-item>
