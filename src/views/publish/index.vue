@@ -4,6 +4,7 @@
       <template slot="title">发布文章</template>
       </bread-crumb>
       <!-- {{formData}} -->
+        <!-- 表单 model 数据对象  rules 绑定规则 -->
       <el-form ref="publishForm" :model="formData" :rules="publishRules" style="margin-left:100px" label-width="100px">
           <el-form-item label="标题" prop='title'>
               <el-input v-model="formData.title" style="width:400px"></el-input>
