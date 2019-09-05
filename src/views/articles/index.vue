@@ -8,12 +8,12 @@
         <el-form-item label="文章状态:">
 <!-- 文章状态，0-草稿，1-待审核，2-审核通过，3-审核失败，4-已删除，不传为全部 -->
         <el-radio-group>
-          <el-radio>全部</el-radio>
-              <el-radio>草稿</el-radio>
-              <el-radio>待审核</el-radio>
-              <el-radio>审核通过</el-radio>
-              <el-radio>审核失败</el-radio>
-    </el-radio-group>
+          <el-radio :label="5">全部</el-radio>
+          <el-radio :label="0">草稿</el-radio>
+          <el-radio :label="1">待审核</el-radio>
+          <el-radio :label="2">审核通过</el-radio>
+          <el-radio :label="3">审核失败</el-radio>
+         </el-radio-group>
         </el-form-item>
         <el-form-item label="频道列表:">
           <el-select></el-select>
@@ -35,11 +35,11 @@
          <div class="article-item" v-for="(item,index) in list" :key="index">
             <!-- 左侧内容 -->
             <div class="left">
-                <img src="../../assets/img/404.png" alt="">
+                <img :src="item.cover.images.length?item.cover.images[0]:defaultImg" alt="">
                 <div class="info">
-                <span class="title">1111</span>
-                <el-tag style="width:60px">已发表</el-tag>
-                <span class="date">1111111</span>
+                <span class="title">{{item.title}}</span>
+                <el-tag style="width:60px">{{item.status |statusText}}</el-tag>
+                <span class="date">{{item.pubdate}}</span>
                 </div>
 
             </div>
@@ -58,8 +58,39 @@
 export default {
   data () {
     return {
-      list: [1, 2, 3, 4, 5, 6]// 定义一个空数组
+      list: [], // 定义一个空数组
+      defaultImg: require('../../assets/img/404.png'), // base64字符串
+      atatus: 5 // 状态
 
+    }
+  },
+  // 查询文章的列表内容
+  methods: {
+    getArticles () {
+      this.$axios({
+        url: '/articles'
+      }).then(result => {
+        this.list = result.data.results
+      })
+    }
+  },
+  created () {
+    this.getArticles()
+  },
+  filters: {
+    statusText (value) {
+      switch (value) {
+        case 0:
+          return '草稿'
+        case 1:
+          return '待审核'
+        case 2:
+          return '已发表'
+        case 3:
+          return '审核失败'
+        default:
+          break
+      }
     }
   }
 }
