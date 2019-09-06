@@ -88,10 +88,24 @@ export default {
           })
         }
       })
+    },
+
+    /// / 通过id获取文章详情
+    getArticleById (articleId) {
+      this.$axios({
+        url: `/articles/${articleId}`
+      }).then(result => {
+        this.formData = result.data
+      })
     }
   },
   created () {
-    this.getChannels()
+    this.getChannels()// 获取频道
+    let { articleId } = this.$route.params// 获取id
+    if (articleId) {
+      // 如果存在，说明是修改文章，通过id 获取当前的文章的数据
+      this.getArticleById(articleId)
+    }
   }
 }
 </script>

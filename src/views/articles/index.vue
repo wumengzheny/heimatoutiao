@@ -48,7 +48,8 @@
         </div>
         <!-- 右侧内容 -->
         <div class="right">
-          <span>
+          <!-- 给修改按钮注册一个事件 -->
+          <span @click="modifyItem(item)">
             <i class="el-icon-edit"></i>修改
           </span>
           <span @click="delItem(item)">
@@ -84,6 +85,11 @@ export default {
   },
 
   methods: {
+    modifyItem (item) {
+      // alert(item)
+      // 跳转到发布页面
+      this.$router.push(`/home/publish/${item.id.toString()}`)
+    },
     delItem (item) {
       this.$confirm('你是否要删除此文章？', '提示').then(() => {
         // 确定要删除
