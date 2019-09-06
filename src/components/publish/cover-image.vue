@@ -1,9 +1,14 @@
 <template>
   <div class="cover-image">
       <!-- {{images}} -->
-      <div class="image-item" v-for="(item,index) in images" :key="index">
-          <img src="../../assets/img/pic_bg.png" alt="">
+      <!-- //注册图片的点击事件 -->
+      <div @click="showDialog" class="image-item" v-for="(item,index) in images" :key="index">
+          <img :src="item ? item : defaultImg" alt="">
       </div>
+      <el-dialog @close="hideDialog" :visible="dialogVisbile">
+          <!-- 素材选择/上传图片 -->
+          <select-image></select-image>
+      </el-dialog>
   </div>
 </template>
 
@@ -13,7 +18,22 @@
 // images ['','','']
 // images []
 export default {
-  props: ['images']
+  props: ['images'],
+  data () {
+    return {
+      // 定义一个变量 图片的base64字符串
+      defaultImg: require('../../assets/img/pic_bg.png'),
+      dialogVisbile: false
+    }
+  },
+  methods: {
+    showDialog () {
+      this.dialogVisbile = true// 显示弹层
+    },
+    hideDialog () {
+      this.dialogVisbile = false// 关闭弹层
+    }
+  }
 }
 </script>
 
