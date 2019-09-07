@@ -8,7 +8,7 @@
          </span>
      </el-col>
      <el-col :span="3" class="right">
-         <img class="header-img" :src="!userInfo.photo?userInfo.photo: defaultImg" alt="">
+         <img class="header-img" :src="userInfo.photo?userInfo.photo: defaultImg" alt="">
          <!-- el-dropdown 下拉菜单 =>  显示名称 匿名插槽, 下拉内容是具名插槽 -->
      <el-dropdown trigger="click" @command='handleMenuItem'>
  <span class="el-dropdown-link">
@@ -28,7 +28,7 @@
 </template>
 
 <script>
-
+import eventBus from '../../utils/events'
 export default {
   data () {
     return {
@@ -64,6 +64,9 @@ export default {
 
   },
   created () {
+    eventBus.$on('updateUserInfo', () => {
+      this.getUserInfo()
+    })
     this.getUserInfo()
   }
 }
