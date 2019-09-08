@@ -43,6 +43,7 @@
 </template>
 
 <script>
+import { getComments, openOrClose } from '../../api/comment.js'
 export default {
   data () {
     return {
@@ -77,12 +78,13 @@ export default {
       // })
       await this.$confirm(`您是否要${mess}评论？`, '提示')
       // 调用接口
-      await this.$axios({
-        method: 'put',
-        url: '/comments/status',
-        params: { article_id: row.id.toString() },
-        data: { allow_comment: !row.comment_status }
-      })
+      // await this.$axios({
+      //   // method: 'put',
+      //   // url: '/comments/status',
+      //   // params: { article_id: row.id.toString() },
+      //   // data: { allow_comment: !row.comment_status }
+      // })
+      await openOrClose({ article_id: row.id.toString() }, { allow_comment: !row.comment_status })
       this.getComments()// 成功之后 重新调用 拉取数据的方法=>前后台 同步
     },
     formatter (row, column, cellValue, index) {
@@ -100,16 +102,12 @@ export default {
     //   // console.log(result.data)
     //   })
     // }
-    async  getComments () {
-      this.loading = true// 请求数据之前 把进度条打开
-      let result = await this.$axios({
-        url: '/articles',
-        params: { response_type: 'comment', page: this.page.page, per_page: this.page.pageSize }
-      })
-      this.loading = false // 响应数据之后
+    async getComments () {
+      this.loading = true // 请求数据之前 把进度条打开
+      let result = await getComments({ response_type: 'comment', page: this.page.page, per_page: this.page.pageSize })
+      this.loading = false // 响应数据之后关系
       this.list = result.data.results
       this.page.total = result.data.total_count
-      // console.log(result.data)
     }
   },
   created () {

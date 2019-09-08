@@ -41,6 +41,7 @@
 </template>
 
 <script>
+import { getMaterial } from '../../api/material'
 export default {
   data () {
     return {
@@ -109,19 +110,20 @@ export default {
       this.getMaterial()
     },
     getMaterial () {
-      this.$axios({
-        url: '/user/images',
-        params: {
-          page: this.page.page,
-          per_page: this.page.pageSize,
+      getMaterial({
+        // url: '/user/images',
+        // params: {
+        page: this.page.page,
+        per_page: this.page.pageSize,
 
-          collect: this.activeName === 'collect'
-        }
+        collect: this.activeName === 'collect'
+        // }
         // 全部的数据为fasle就是查看所有的图片
-      }).then(result => {
-        this.list = result.data.results
-        this.page.total = result.data.total_count
       })
+        .then(result => {
+          this.list = result.data.results
+          this.page.total = result.data.total_count
+        })
     }
   },
   created () {

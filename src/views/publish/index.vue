@@ -39,6 +39,8 @@
 </template>
 
 <script>
+import { getChannels, publish, getArticleById } from '../../api/publish.js'
+import api from '../../constant/api'
 export default {
   data () {
     let func = function (rule, value, callBack) {
@@ -118,9 +120,15 @@ export default {
         this.formData.cover.images = []// 自动或者无图 没有内容
       }
     },
+    // getChannels () {
+    //   this.$axios({
+    //     url: '/channels'
+    //   }).then(result => {
+    //     this.channels = result.data.channels
+    //   })
+    // },
     getChannels () {
-      this.$axios({
-        url: '/channels'
+      getChannels({
       }).then(result => {
         this.channels = result.data.channels
       })
@@ -131,10 +139,9 @@ export default {
       this.$refs.publishForm.validate(async (isOk) => {
         if (isOk) {
           let { articleId } = this.$route.params// 获取id
-          await this.$axios({
+          await publish({
             // 只有校验成功了，才去管是新增还是修改
-
-            url: articleId ? `/articles/${articleId}` : '/articles',
+            url: articleId ? `${api.API_ARTICLES}/${articleId}` : '/articles',
             method: articleId ? 'put' : 'post',
             params: { draft }, // draft 为true时 就是草稿
             data: this.formData
@@ -145,12 +152,9 @@ export default {
     },
 
     /// / 通过id获取文章详情
-    getArticleById (articleId) {
-      this.$axios({
-        url: `/articles/${articleId}`
-      }).then(result => {
-        this.formData = result.data
-      })
+    async getArticleById (articleId) {
+      let result = await getArticleById(articleId)
+      this.formData = result.data
     }
   },
   created () {
