@@ -45,6 +45,10 @@
           <i class="el-icon-s-tools"></i>
           <span slot="title">账户管理</span>
       </el-menu-item>
+       <el-menu-item index="/home/async">
+          <i class="el-icon-s-tools"></i>
+          <span slot="title">异步方案</span>
+      </el-menu-item>
     </el-menu>
 </div>
 

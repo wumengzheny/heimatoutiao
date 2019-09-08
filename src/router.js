@@ -43,6 +43,11 @@ export default new Router({
       // 图文数据
       path: 'fansdata',
       component: () => import('./views/fans/fansdata.vue')
+    },
+    {
+      // 异步方案
+      path: 'async',
+      component: () => import('./views/async')
     }
     ]
   },

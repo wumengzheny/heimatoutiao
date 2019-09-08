@@ -62,34 +62,54 @@ export default {
       this.page.page = newPage
       this.getComments()
     },
-    openOrClose (row) {
+    async openOrClose (row) {
       let mess = row.comment_status ? '关闭' : '打开'
-      this.$confirm(`您是否要${mess}评论？`, '提示').then(() => {
-        // 调用接口
-        this.$axios({
-          method: 'put',
-          url: '/comments/status',
-          params: { article_id: row.id.toString() },
-          data: { allow_comment: !row.comment_status }
-        }).then(result => {
-          this.getComments()// 成功之后 重新调用 拉取数据的方法=>前后台同步
-        })
+      // this.$confirm(`您是否要${mess}评论？`, '提示').then(() => {
+      //   // 调用接口
+      //   this.$axios({
+      //     method: 'put',
+      //     url: '/comments/status',
+      //     params: { article_id: row.id.toString() },
+      //     data: { allow_comment: !row.comment_status }
+      //   }).then(result => {
+      //     this.getComments()// 成功之后 重新调用 拉取数据的方法=>前后台同步
+      //   })
+      // })
+      await this.$confirm(`您是否要${mess}评论？`, '提示')
+      // 调用接口
+      await this.$axios({
+        method: 'put',
+        url: '/comments/status',
+        params: { article_id: row.id.toString() },
+        data: { allow_comment: !row.comment_status }
       })
+      this.getComments()// 成功之后 重新调用 拉取数据的方法=>前后台 同步
     },
     formatter (row, column, cellValue, index) {
       return row.comment_status ? '正常' : '关闭'
     },
-    getComments () {
+    // getComments () {
+    //   this.loading = true// 请求数据之前 把进度条打开
+    //   this.$axios({
+    //     url: '/articles',
+    //     params: { response_type: 'comment', page: this.page.page, per_page: this.page.pageSize }
+    //   }).then(result => {
+    //     this.loading = false // 响应数据之后
+    //     this.list = result.data.results
+    //     this.page.total = result.data.total_count
+    //   // console.log(result.data)
+    //   })
+    // }
+    async  getComments () {
       this.loading = true// 请求数据之前 把进度条打开
-      this.$axios({
+      let result = await this.$axios({
         url: '/articles',
         params: { response_type: 'comment', page: this.page.page, per_page: this.page.pageSize }
-      }).then(result => {
-        this.loading = false // 响应数据之后
-        this.list = result.data.results
-        this.page.total = result.data.total_count
-      // console.log(result.data)
       })
+      this.loading = false // 响应数据之后
+      this.list = result.data.results
+      this.page.total = result.data.total_count
+      // console.log(result.data)
     }
   },
   created () {

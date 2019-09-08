@@ -128,20 +128,18 @@ export default {
 
     // 发布文章
     publish (draft) {
-      this.$refs.publishForm.validate((isOk) => {
+      this.$refs.publishForm.validate(async (isOk) => {
         if (isOk) {
           let { articleId } = this.$route.params// 获取id
-          this.$axios({
+          await this.$axios({
             // 只有校验成功了，才去管是新增还是修改
 
             url: articleId ? `/articles/${articleId}` : '/articles',
             method: articleId ? 'put' : 'post',
             params: { draft }, // draft 为true时 就是草稿
             data: this.formData
-          }).then(() => {
-          // 编程式导航
-            this.$router.push('/home/articles')// 跳转到文章列表页面
-          })
+          })// 编程式导航
+          this.$router.push('/home/articles')// 跳转到文章列表页面
         }
       })
     },
